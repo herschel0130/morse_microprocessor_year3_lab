@@ -13,7 +13,6 @@
     config BORV = 285        ; Brown-out voltage ~2.85V
     config WDTEN = OFF       ; Watchdog timer disabled
     config XINST = OFF       ; Extended instruction set disabled
-    config LVP = OFF         ; Low-voltage programming disabled
     config CP0 = OFF         ; Code protection off
     config CP1 = OFF
     config CP2 = OFF
@@ -515,13 +514,13 @@ buf_enqueue:
     addwf FSR0L, f, a
 
     movf evt_type, w, a
-    movwf POSTINC0
+    movwf POSTINC0, a
     movf evt_dur_H, w, a
-    movwf POSTINC0
+    movwf POSTINC0, a
     movf evt_dur_M, w, a
-    movwf POSTINC0
+    movwf POSTINC0, a
     movf evt_dur_L, w, a
-    movwf INDF0
+    movwf INDF0, a
 
     ; Advance head: (head + 1) & 0x07
     incf buf_head, f, a
@@ -547,13 +546,13 @@ _deq_notempty:
     movf PRODL, w, a
     addwf FSR0L, f, a
 
-    movf POSTINC0, w
+    movf POSTINC0, w, a
     movwf deq_type, a
-    movf POSTINC0, w
+    movf POSTINC0, w, a
     movwf deq_dur_H, a
-    movf POSTINC0, w
+    movf POSTINC0, w, a
     movwf deq_dur_M, a
-    movf INDF0, w
+    movf INDF0, w, a
     movwf deq_dur_L, a
 
     ; Advance tail: (tail + 1) & 0x07
@@ -585,7 +584,7 @@ isr_high:
     bsf state_flags, 0, a    ; arm the system
     btg INTCON2, 6, a        ; toggle edge for next event
     bcf INTCON, 1, a         ; clear INT0IF
-    retfie FAST
+    retfie f
 _isr_h_armed:
 
     ; --- Debounce: reject if duration < ~20 ms = 10000 ticks = 0x002710 ---
@@ -605,7 +604,7 @@ _isr_h_check_low:
     bra _isr_h_accept        ; dur_L >= 0x10 -> accept
 _isr_h_reject:
     bcf INTCON, 1, a         ; clear INT0IF
-    retfie FAST
+    retfie f
 
 _isr_h_accept:
     ; Save registers clobbered by buf_enqueue (FSR0, PROD)
@@ -641,7 +640,7 @@ _isr_h_enqueue:
 
     ; --- Clear interrupt flag ---
     bcf INTCON, 1, a         ; INT0IF = 0
-    retfie FAST
+    retfie f
 
 ; =============================================================================
 ;  ISR — Low Priority (Timer1 overflow)
@@ -660,7 +659,7 @@ _isr_lo_done:
     movff isr_lo_bsr, BSR
     movff isr_lo_w, WREG
     movff isr_lo_status, STATUS
-    retfie 0
+    retfie
 
 ; =============================================================================
 ;  ESTIMATOR — 24-bit exponential smoothing (alpha = 7/8)
