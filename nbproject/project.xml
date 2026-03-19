@@ -3,16 +3,14 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>morse-project-v0.1</name>
-            <creation-uuid>ba64a7f6-8706-465c-be24-e09bd21953e4</creation-uuid>
+            <name>LCD-interrupt-test</name>
+            <creation-uuid>3e9af779-3a72-4fde-8215-31d6b0f6f0d2</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
-            <cpp-extensions/>
-            <header-extensions/>
-            <asminc-extensions/>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList/>
+            <sourceRootList>
+                <sourceRootElem>.</sourceRootElem>
+            </sourceRootList>
             <confList>
                 <confElem>
                     <name>default</name>

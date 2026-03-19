@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=morse-project-v0.1.X
+PROJECTNAME=LCD-interrupt-test.X
 
 # Active Configuration
 DEFAULTCONF=default
